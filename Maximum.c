@@ -21,8 +21,9 @@ int trovaMassimoR(int A[], int n){
   else{
     max=trovaMassimoR(A,n-1); //Tolgo l'ultimo elemento e assumo di avere la soluzione
                               //per lo stesso problema ma con n-1 elementi
+  if(A[n-1] > max) max = A[n-1];
   }
-  return 0;
+  return max;
 }
 void riempiArray(int A[], int n){
   int i = 0;
