@@ -43,7 +43,25 @@ struct elem *inserisciInCodaR(struct elem *top, int k){
 }
 
 struct elem *eliminaElemeniMinoreR(struct elem *top, int k){
-
+  struct elem *res=NULL;
+  struct elem *tmp;
+/*  if(top==NULL){
+  res=NULL;
+} else*/
+  if(top!=NULL){ //considero tutta la lista escluso il primo
+  tmp = top->next;
+  //suppongo che la mia funzione sia coretta su tmp, restituisce la lista senza gli elementi minori di k
+  eliminaElemeniMinoreR(tmp,k);
+  //adesso posso considerare che il res ci sia la lista tmp senza gli elementi minori di k
+  //allora se il top della mia lusta completa(cioè l'elemento che ho escluso, è maggiore o uguale a k lo devo aggiungere a re, altrimenti eliminarlo)
+  if(top->k < k){
+    free(top);
+  } else {
+    top->next = res;
+    res=top;
+  }
+}
+return res;
 }
 
 void stampaLista(struct elem *t){
