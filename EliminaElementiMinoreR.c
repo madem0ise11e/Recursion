@@ -39,7 +39,17 @@ struct elem *newElem(int k){
 }
 
 struct elem *inserisciInCodaR(struct elem *top, int k){
+  if (top==NULL) { //passo base
+    top=(struct elem *)malloc(sizeof(struct elem));
+    top->next=NULL;
+    top->k=k;
+  } else {
+    //faccio chiamata ricorsiva u tuttab la lista, escluso il primo elemento
+    //suppongo che la lita restituita sia ben fatta, devo solo aggiungere il primo elemento alla lista così ottenuta
 
+    top->next=inserisciInCodaR(top->next, k);
+  }
+  return top;
 }
 
 struct elem *eliminaElemeniMinoreR(struct elem *top, int k){
@@ -64,10 +74,17 @@ struct elem *eliminaElemeniMinoreR(struct elem *top, int k){
 return res;
 }
 
-void stampaLista(struct elem *t){
-  while(t!=NULL){
-  printf("%d --> ", t->k);
-  t=t->next;
+void stampaLista(struct elem *top){
+  while(top!=NULL){
+  printf("%d --> ", top->k);
+  top=top->next;
   }
   printf("NULL\n");
+  /*if(top==NULL) {
+    printf("NULL\n");
+  } else {
+    printf("%d->\n", top->k);
+    stampaLista(top->next); //queta è detta finta ricorsione perche dopo la chiamata ricorsiva non faccio nulla, in questi casi sempre meglio l'iterazione!
+
+  }*/
 }
