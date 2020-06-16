@@ -10,6 +10,8 @@ struct elem{
 struct elem *eliminaElemeniMinoreR(struct elem *top, int k);
 struct elem *inserisciInCodaR(struct elem *top, int k);
 void stampaLista(struct elem *top);
+struct elem *inserisciInOrdineR(struct elem * top, int k);
+struct elem *mergeR(struct elem *top1, struct elem *top2);
 
 int main(){
   int n,i,k;
@@ -87,4 +89,50 @@ void stampaLista(struct elem *top){
     stampaLista(top->next); //queta è detta finta ricorsione perche dopo la chiamata ricorsiva non faccio nulla, in questi casi sempre meglio l'iterazione!
 
   }*/
+}
+
+struct elem *inserisciInOrdineR(struct elem * top, int k){
+  struct elem *tmp;
+  if (top==NULL){
+    top=(struct elem *)malloc(sizeof(struct elem));
+    top->next=NULL;
+    top->k=k;
+  } else {
+    if (k<top->k){
+      tmp=(struct elem *)malloc(sizeof(struct elem));
+      tmp->next=top;
+      tmp->k=k;
+      top=tmp;
+    } else {
+      top->next=inserisciInOrdineR(top->next, k);
+    }
+  }
+  return top;
+}
+
+//versione che distrugge le liste originali
+//tale codici può essere scritto in maniera più sintetica
+struct elem *mergeR(struct elem *top1, struct elem *top2){
+  struct elem *res, *min, *tmp;
+  if(top1==NULL) res=top2;
+  else if(top2==NULL) res=top1;
+  else { //entrambe diverse da null
+  //se ho due liste ordinate in maniera crescente il più piccolo di tutti sarà il minimo tra il top della prima lista ed il top della seconda lista
+  if(top1->k < top2->k){
+  //stacco top1 dalla prima lista e risolvo lo stesso problema senza top1 poi rimetto in testa top1
+  min=top1;
+  tmp=mergeR(top1->next, top2);
+  //assumo che tmp è una lista ordinata composta dagli elementi di top1 senza il primo elemento e top2, allora aggiungo in testa a tale lista l'elementp che avevo escluso;
+  min->next=tmp;
+  res=min;
+} else {
+  //stacco top2 dalla seconda lista e risolvo lo stesso problema senza top2 poi rimetto in testa top2
+  min=top2;
+  tmp=mergeR(top1, top2->next);
+  //assumo che tmp è una lista ordinata composta dagli elementi di top2 senza il primo elemento e top1, allora aggiungo in testa a tale lista l'elementp che avevo escluso;
+  min->next=tmp;
+  res=min;
+}
+}
+return res;
 }
